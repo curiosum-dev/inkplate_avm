@@ -1,11 +1,4 @@
 defmodule InkplateAvm.Http do
-  @url_regex ~r/
-    ^(?<scheme>[A-Za-z][A-Za-z0-9+.\-]*)
-    :\/\/
-    (?<host>[^\/]+)
-    (?<path>\/.*)?
-  $/x
-
   def get(scheme, host, path) do
     with {:ok, conn} <-
            :ahttp_client.connect(
@@ -20,7 +13,7 @@ defmodule InkplateAvm.Http do
       data =
         response
         |> Enum.find(fn
-          {:data, _, data} -> true
+          {:data, _, _data} -> true
           _ -> false
         end)
         |> then(fn {:data, _, data} -> data end)
@@ -28,7 +21,7 @@ defmodule InkplateAvm.Http do
       status =
         response
         |> Enum.find(fn
-          {:status, _, status} -> true
+          {:status, _, _status} -> true
           _ -> false
         end)
         |> then(fn {:status, _, status} -> status end)
@@ -36,7 +29,7 @@ defmodule InkplateAvm.Http do
       header =
         response
         |> Enum.find(fn
-          {:header, _, header} -> true
+          {:header, _, _header} -> true
           _ -> false
         end)
         |> then(fn {:header, _, header} -> header end)
